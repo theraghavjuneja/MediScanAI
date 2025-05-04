@@ -1,0 +1,17 @@
+answer={
+  "report_summary": "The Cardio Health Test Report for Jane Doe (age 24, female) indicates moderately elevated LDL cholesterol and borderline high hs-CRP levels, suggesting an increased risk of cardiovascular disease. Her HbA1c is within the normal range, indicating good blood sugar control, and her HDL cholesterol is at a healthy level. Despite a healthy BMI and no current medications, her family history of heart disease and cancer contributes to her overall risk profile. Lifestyle interventions are recommended to manage cholesterol and inflammation markers.",
+  "key_findings": [
+    "Elevated LDL cholesterol (137 mg/dL) indicating increased risk for atherosclerosis.",
+    "Normal HbA1c (5.0%), suggesting good blood glucose control and low diabetes risk.",
+    "Borderline high hs-CRP (1.2 mg/L), indicating low-grade chronic inflammation and potential cardiovascular risk.",
+    "Normal HDL cholesterol (53 mg/dL), providing some protective effect against heart disease."
+  ],
+  "severity_assessment": "Moderate",
+  "recommended_followup": "Consult a healthcare provider for a full cardiovascular risk assessment and consider lifestyle or medical interventions based on LDL and hs-CRP levels.",
+  "treatment_considerations": [
+    "Adopt a heart-healthy diet low in saturated and trans fats to reduce LDL cholesterol.",
+    "Increase physical activity to maintain healthy HDL levels and reduce cardiovascular risk.",
+    "Consider routine monitoring of lipid profile and hs-CRP to track improvements or deterioration.",
+    "Avoid smoking and manage weight to further reduce cardiovascular disease risks."
+  ]
+}
