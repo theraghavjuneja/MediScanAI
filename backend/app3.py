@@ -29,6 +29,8 @@ app.add_middleware(
 # Load models
 model = load_model("best_brain_tumor_model.h5")
 model2 = load_model("chest_xray_model.h5")
+# Load the medical image type classification model
+image_type_model = load_model("medical_mnist_model.h5")
 
 # Groq API client
 client = Groq(api_key='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')
@@ -36,6 +38,8 @@ client = Groq(api_key='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'
 # Category info
 categories = ['notumor', 'glioma', 'meningioma', 'pituitary']
 categories_2 = ['Normal', 'Pneumonia']
+# Class labels for medical image type classification
+image_type_classes = ['AbdomenCT', 'BreastMRI', 'CXR', 'ChestCT', 'Hand', 'HeadCT']
 
 condition_info = {
     'notumor': {
@@ -78,6 +82,10 @@ class PneumoniaPredictionResponse(BaseModel):
     area_of_interest: str
     analysis_description: str
     confidence: float
+class ImageTypePredictionResponse(BaseModel):
+    image_type: Literal['AbdomenCT', 'BreastMRI', 'CXR', 'ChestCT', 'Hand', 'HeadCT']
+    confidence: float
+    message: str  # Optional: a short helpful message
 
 # Tumor prediction
 @app.post("/predict", response_model=TumorPredictionResponse)
@@ -131,6 +139,27 @@ async def predict_pneumonia(file: UploadFile = File(...)):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during prediction: {str(e)}")
+@app.post("/predict-image-type", response_model=ImageTypePredictionResponse)
+async def predict_image_type(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        img = Image.open(io.BytesIO(contents)).convert('RGB')
+        img = img.resize((64, 64))  # match training size
+        img_array = image.img_to_array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+
+        predictions = image_type_model.predict(img_array)
+        predicted_index = np.argmax(predictions[0])
+        confidence = float(predictions[0][predicted_index])
+        predicted_class = image_type_classes[predicted_index]
+
+        return ImageTypePredictionResponse(
+            image_type=predicted_class,
+            confidence=round(confidence, 4),
+            message=f"This image appears to be a {predicted_class} scan with {round(confidence * 100, 2)}% confidence."
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
 # PDF medical report analysis
 def extract_text_from_pdf(file_path):
