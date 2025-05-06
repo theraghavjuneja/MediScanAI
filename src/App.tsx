@@ -4,6 +4,7 @@ import Header from './components/Header';
 import FileUpload from './components/FileUpload';
 import AnalysisResults from './components/AnalysisResults';
 import ChatInterface from './components/ChatInterface';
+import DetectType from './components/DetectType';
 import Footer from './components/Footer';
 import { useApp } from './contexts/AppContext';
 
@@ -18,6 +19,8 @@ const MainContent: React.FC = () => {
       return <AnalysisResults />;
     case 'chat':
       return <ChatInterface />;
+    case 'detect':
+      return <DetectType />;
     default:
       return <FileUpload />;
   }
